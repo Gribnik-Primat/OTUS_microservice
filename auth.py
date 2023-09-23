@@ -23,7 +23,7 @@ def get_token():
     battle_id = data.get('battle_id')
     if user_id in tank_battles.get(battle_id, []):
         token = jwt.encode({'user_id': user_id, 'battle_id': battle_id}, SECRET_KEY, algorithm='HS256')
-        return jsonify({'token': token.decode('utf-8')})
+        return jsonify({'token': token})
     else:
         return jsonify({'message': 'User is not a participant of this battle'}), 403
 

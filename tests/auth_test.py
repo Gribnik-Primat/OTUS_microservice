@@ -18,7 +18,12 @@ class AuthServiceTestCase(unittest.TestCase):
         self.assertIn('battle_id', data)
 
     def test_get_token(self):
-        data = {'user_id': 'user1', 'battle_id': self.battle_id}
+        data = {'participants': self.participants}
+        response = self.app.post('/create_battle', data=json.dumps(data), content_type='application/json')
+        self.assertEqual(response.status_code, 200)
+        result = json.loads(response.data)
+        self.assertIn('battle_id', result)
+        data = {'user_id': 'user1', 'battle_id': result['battle_id']}
         response = self.app.post('/get_token', data=json.dumps(data), content_type='application/json')
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.data)
